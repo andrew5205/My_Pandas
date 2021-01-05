@@ -1,4 +1,5 @@
-
+# df.select_dtypes(include='')
+# df.select_dtypes(exclude='')
 
 import pandas as pd
 
