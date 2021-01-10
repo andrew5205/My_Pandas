@@ -17,6 +17,7 @@ df = pd.DataFrame(
 # # sidewinder          7       8
 
 
+
 # Single label. Note this returns the row as a Series.
 print(df.loc['viper'])
 # max_speed    4
@@ -130,4 +131,78 @@ print(df_index_change.loc[100:300])
 # 100          1       2
 # 200          3       4
 # 300          5       6
+
+
+# # ***************************************************************************************************************
+# Multiple Index
+
+tuples = [
+    ('cobra', 'mark i'),
+    ('cobra', 'mark ii'),
+    ('sidewinder', 'mark i'),
+    ('sidewinder', 'mark ii'),
+    ('viper', 'mark ii'),
+    ('viper', 'mark iii')
+]
+
+index = pd.MultiIndex.from_tuples(tuples)
+
+values = [
+    [12,2], [0,4], [10,20], [1,4], [7,1], [16,36]
+]
+
+df = pd.DataFrame(values, columns=['max_speed', 'shield'], index=index)
+print(df)
+#                     max_speed  shield
+# cobra      mark i           12       2
+#            mark ii           0       4
+# sidewinder mark i           10      20
+#            mark ii           1       4
+# viper      mark ii           7       1
+#            mark iii         16      36
+
+
+print(df.loc['cobra'])
+#          max_speed  shield
+# mark i          12       2
+# mark ii          0       4
+
+
+
+print(df.loc['cobra', 'mark i'])
+# max_speed    12
+# shield        2
+# Name: (cobra, mark i), dtype: int64
+
+
+# Note using [[]] returns a DataFrame.
+# (index, colum)
+print(df.loc[[('cobra', 'mark ii')]])
+#                max_speed  shield
+# cobra mark ii          0       4
+
+
+print(df.loc[('cobra', 'mark i'), 'shield'])                # 2
+
+
+# Slice from index tuple to single label
+print(df.loc[('cobra', 'mark i'): 'viper'])
+#                     max_speed  shield
+# cobra      mark i           12       2
+#            mark ii           0       4
+# sidewinder mark i           10      20
+#            mark ii           1       4
+# viper      mark ii           7       1
+#            mark iii         16      36
+
+
+# Slice from index tuple to index tuple
+print(df.loc[('cobra', 'mark i'): ('viper', 'mark ii')])
+#                    max_speed  shield
+# cobra      mark i          12       2
+#            mark ii          0       4
+# sidewinder mark i          10      20
+#            mark ii          1       4
+# viper      mark ii          7       1
+
 
